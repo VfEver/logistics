@@ -1,0 +1,149 @@
+<div ng-controller="NavOperatorController">
+<div class="nav-outer">
+	<div class="nav-wrap">
+		<nav class="navbar navbar-default" role="navigation">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="#index">辉记物流</a>
+		    </div>
+		    
+		    <div>
+	        <ul class="nav navbar-nav nav-tabs">
+	            <li ng-click="changToTask()" id="taskID"><a href="#" data-toggle="tab">任务单管理</a></li>
+	            <li ng-click="changToSettlement()" id="settlementID"><a href="#settlement" data-toggle="tab">结算管理</a></li>
+	            <li ng-click="changToOperation()" id="operationID"><a href="javascript: void(0)" data-toggle="tab">运营管理</a></li>
+	            <li ng-click="changToStatistics()" id="statisticsID"><a href="#statistics" data-toggle="tab">统计管理</a></li>
+	            <li ng-click="changToInformation()" id="informationID"><a href="#information" data-toggle="tab">信息管理</a></li>
+	        </ul>
+			</div>
+		    
+		    <ul ng-hide="online" class="nav navbar-nav navbar-right">
+		      	<li ng-click="showRegisterModal()"><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+		      	<li ng-click="showLoginModal()"><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+		    </ul>
+		    
+		    <div class="modal" id="loginModal">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">登录</h4>
+						</div>
+						
+						<form style="padding:30px 80px;">
+							<div class="form-group has-feedback">  
+				                 <span class="glyphicon glyphicon-user"></span>
+				                 <label for="account" style="color: gray;">账号</label>  
+				                 <input ng-model="account" 
+				                 	type="text" 
+				                 	class="form-control" 
+				                 	name="account" 
+				                 	placeholder="用户名" autofocus>
+				          	</div>
+				          	<br/>
+				            <div class="form-group has-feedback">
+				                <span class="glyphicon glyphicon-lock"></span>
+				                <label for="password" style="color: gray;">密码</label>  
+				                <input ng-model="password"
+				                	type="password"
+				                	class="form-control"
+				                	id="password"
+				                	name="password"
+				                	placeholder="密   码">
+				            </div> 
+						</form>
+						
+						<div class="modal-footer">
+							现在还没有账号，立即去<a ng-click="showRegisterModal()" data-dismiss="modal">注册</a>
+							<button type="button" class="btn btn-primary" ng-click="login()" data-dismiss="modal">登录</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			
+			
+			<div class="modal" id="registerModal" name="registerForm">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">注册</h4>
+						</div>
+						
+						<form name="registerForm" style="padding:30px 80px;">
+							<div class="form-group has-feedback">  
+				                 <span class="glyphicon glyphicon-user"></span>
+				                 <label for="account" style="color: gray;">账号</label> 
+				                 <br /> 
+				                 <input
+				                 	ng-model="account"  
+				                 	ng-minlength="6"
+				                 	ng-maxlength="20"
+				                 	maxlength="20" 
+				                 	type="text" 
+				                 	class="form-control accountInput" 
+				                 	name="username" 
+				                 	placeholder="账   号" 
+				                 	autofocus />
+				                 	<p style="font-size:15px;color:red" 
+									ng-if="registerForm.username.$error.minlength && registerForm.username.$touched">
+									账号长度在6~20之间</p>
+				                 	<p ng-show="accountUsed" style="color:red; font-size: 15px;">此账号已经被注册</p>
+				          	</div>
+				            <div class="form-group has-feedback">
+				                <span class="glyphicon glyphicon-lock"></span>
+				                <label for="password" style="color: gray;">密码</label>  
+				                <br/>
+				                <input ng-model="password" 
+				                	ng-minlength="6"
+				                 	ng-maxlength="20"
+				                	maxlength="20" 
+				                	type="password" 
+				                	class="form-control passwordInput" 
+				                	name="password" 
+				                	placeholder="密   码" /> 
+				                <p style="font-size:15px;color:red"
+								ng-if="registerForm.password.$error.minlength && registerForm.password.$touched">密码长度在6~20之间</p>
+				            </div>
+				            
+				            <div class="form-group has-feedback">
+				                <span class="glyphicon glyphicon-lock"></span>
+				                <label for="password" style="color: gray;">确认密码</label>  
+				                <br/>
+				                <input ng-model="comfirmPassword" 
+				                	maxlength="20" 
+				                	type="password"
+				                	class="form-control confirmPasswordInput" 
+				                	name="confirmPassword" 
+				                	placeholder="密   码" />
+				                <p ng-show="comfirmPasswordInvalidate" style="color:red; font-size: 15px;">两次密码不一致</p>
+				            </div>
+						</form>
+						
+						<div class="modal-footer">
+							已有账号，立即去<a ng-click="showLoginModal()" data-dismiss="modal">登录</a>
+							<button ng-disabled="accountInvalidate || accountUsed || comfirmPasswordInvalidate" type="button" class="btn btn-primary" ng-click="register()" data-dismiss="modal">注册</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			
+			<ul class="nav navbar-nav navbar-right" ng-hide="!online">
+	            <li class="dropdown">
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	                    {{username}} <b class="caret"></b>
+	                </a>
+	                <ul class="dropdown-menu">
+	                    <li><a href="#">个人中心</a></li>
+	                    <li class="divider"></li>
+	                    <li ng-click="logout()"><a href="#">退出</a></li>
+	                </ul>
+	            </li>
+	            <li><a>{{job}}</a></li>
+	        </ul>
+		    
+		  </div>
+		</nav>
+	</div>
+</div>
+</div>

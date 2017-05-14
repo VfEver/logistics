@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.logistics.dao.CarMapper">
+	<resultMap type="car" id="carMap">
+		<id property="carID" column="car_id"/>
+		<result property="carType" column="car_type"/>
+		<result property="capacity" column="capacity"/>
+		<result property="carNumber" column="car_number"/>
+		<result property="carrierID" column="carrier_id"/>
+		<result property="carrierName" column="carrier_name"/>
+		<result property="belongType" column="belong_type"/>
+	</resultMap>
+	
+	<!-- 保存车辆信息 -->
+	<insert id="saveCar" parameterType="car">
+		insert into car(car_type, capacity, car_number, carrier_id, carrier_name, belong_type)
+		values(#{carType}, #{capacity}, #{carNumber}, #{carrierID}, #{carrierName}, #{belongType});
+	</insert>
+	
+	<!-- 根据ID删除车辆信息 -->
+	<delete id="deleteCarByID" parameterType="int">
+		delete from car
+		where car_id = #{id};
+	</delete>
+	
+	<!-- 查询所有车辆信息 -->
+	<select id="findAllCar" resultMap="carMap">
+		select * 
+		from car
+	</select>
+</mapper>

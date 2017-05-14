@@ -1,0 +1,133 @@
+<div ng-controller="TaskController">
+	<div class="task-outer">
+		<div class="task-wrap">
+		
+			<div class="task-inner">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="col-sm-1"></th>
+						<th class="col-sm-6"></th>
+						<th class="col-sm-2"></th>
+						<th class="col-sm-3"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><label for="sendName" class="control-label">发货姓名:</label></td>
+						<td><input ng-model="sendName" type="text" class="form-control" id="sendName" placeholder="请输入名字"></td>
+						<td><label for="sendTelephone" class="control-label">发货人联系方式:</label></td>
+						<td><input ng-model="sendTelephone" type="text" class="form-control" id="sendTelephone" placeholder="请输入电话号码"></td>
+					</tr>
+					
+					<tr>
+						<td><label for="sendAddress" class="control-label">始发地址:</label></td>
+						<td>
+							<form class="form-inline">
+							  <div data-toggle="distpicker">
+								<div class="form-group">
+								  <label class="sr-only" for="province">Province</label>
+								  <select class="form-control" id="province" ng-model="sendProvince"></select>
+								</div>
+								<div class="form-group">
+								  <label class="sr-only" for="city">City</label>
+								  <select class="form-control" id="city" ng-model="sendCity"></select>
+								</div>
+								<div class="form-group">
+								  <label class="sr-only" for="district">District</label>
+								  <select class="form-control" id="district" ng-model="sendDistrict"></select>
+								</div>
+							  </div>
+							</form>
+						</td>
+						<td><label for="sendAddress" class="control-label">始发具体地址:</label></td>
+						<td><input ng-model="detailAddress" type="text" class="form-control" id="detailAddress" placeholder="具体地址"></td>
+					</tr>
+					
+					<tr>
+						<td><label for="sendName" class="control-label">收货姓名:</label></td>
+						<td><input ng-model="reciveName" type="text" class="form-control" id="reciveName" placeholder="请输入名字"></td>
+						<td><label for="reciveTelephone" class="control-label">收货人联系方式:</label></td>
+						<td><input ng-model="reciveTelephone" type="text" class="form-control" id="reciveTelephone" placeholder="请输入电话号码"></td>
+					</tr>
+					
+					<tr>
+						<td><label for="reciveAddress" class="control-label">收货地址:</label></td>
+						<td>
+							<form class="form-inline">
+							  <div data-toggle="distpicker">
+								<div class="form-group">
+								  <label class="sr-only" for="province">Province</label>
+								  <select class="form-control" id="province" ng-model="reciveProvince"></select>
+								</div>
+								<div class="form-group">
+								  <label class="sr-only" for="city">City</label>
+								  <select class="form-control" id="city" ng-model="reciveCity"></select>
+								</div>
+								<div class="form-group">
+								  <label class="sr-only" for="district">District</label>
+								  <select class="form-control" id="district" ng-model="reciveDistrict"></select>
+								</div>
+							  </div>
+							</form>
+						</td>
+						<td><label for="sendAddress" class="control-label">收货具体地址:</label></td>
+						<td><input ng-model="detailAddress" type="text" class="form-control" id="detailAddress" placeholder="具体地址"></td>
+					</tr>
+					
+					<tr>
+						<td><label class="control-label">货物类型:</label></td>
+						<td>
+							<select class="form-control">
+								<option>食品饮料</option>
+								<option>蔬菜水果</option>
+								<option>电子电器</option>
+								<option>农资粮食</option>
+								<option>化工产品</option>
+								<option>日用百货</option>
+								<option>汽修配件</option>
+								<option>药品</option>
+							</select>
+						</td>
+						<td><label class="control-label">货运量:</label></td>
+						<td>
+							<div class="input-group">
+								<input type="text" class="form-control" ng-model="weight">
+								<span class="input-group-addon">吨</span>
+							</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td><label class="control-label">车辆类型:</label></td>
+						<td><input ng-model="carType" type="text" class="form-control" placeholder="点击选择车辆类型"></td>
+						<td><label class="control-label">驾驶人:</label></td>
+						<td><input ng-model="diver" type="text" class="form-control" placeholder="点击选择驾驶人"></td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td></td>
+						<td><label class="control-label">实际费用:</label></td>
+						<td>
+							<div class="input-group">
+								<input type="text" class="form-control" ng-model="cost">
+								<span class="input-group-addon">元</span>
+							</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><button ng-click="createTask()" type="button" class="btn btn-info">创建任务单</button></td>
+					</tr>
+					
+				</tbody>
+			</table>
+			</div>
+			
+		</div>
+	</div>
+</div>

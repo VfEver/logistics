@@ -1,0 +1,210 @@
+<div class="information-outer" ng-controller="InformationController">
+	<div class="information-wrap">
+		<div class="information-inner">
+			<ul id="myTab" class="nav nav-tabs">
+				<li class="active">
+					<a href="/#people" data-toggle="tab">
+						 人员信息管理
+					</a>
+				</li>
+				<li><a href="/#car" data-toggle="tab">车辆信息管理</a></li>
+				<li><a href="/#carrier" data-toggle="tab">承运商信息管理</a></li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade in active" id="people">
+					
+				</div>
+				
+				<div class="tab-pane fade" id="car">
+					<button ng-click="carModalShow()" class="btn btn-default">添加车辆信息</button>
+					
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>车牌号</th>
+								<th>运载量</th>
+								<th>车型</th>
+								<th>归属</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr ng-repeat="car in carList">
+								<td>{{car.carNumber}}</td>
+								<td>{{car.capacity}}</td>
+								<td>{{car.carType}}</td>
+								<td>{{car.belongType}}</td>
+								<td><button ng-click="deleteCar(car.carID)" class="btn btn-danger">删除</button></td>
+							</tr>
+						</tbody>
+					</table>
+					
+					 <div class="modal" id="carModal">
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+					            <div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+									<h4 class="modal-title">车辆信息框</h4>
+								</div>
+								
+								<table class="table">
+									<thead>
+										<tr>
+											<th class="col-sm-6"></th>
+											<th class="col-sm-6"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><label class="control-label">车型:</label></td>
+											<td>
+												<select class="form-control" ng-model="selectedCarType">
+													<option value="平板车">平板车</option>
+													<option value="高栏车">高栏车</option>
+													<option value="厢式汽车">厢式汽车</option>
+													<option value="保温车">保温车</option>
+													<option value="危险品车">危险品车</option>
+												</select>
+											</td>
+										</tr>
+										
+										<tr>
+											<td><label class="control-label">运载量:</label></td>
+											<td>
+												<div class="input-group">
+													<input type="text" class="form-control" ng-model="weight">
+													<span class="input-group-addon">吨</span>
+												</div>
+											</td>
+										</tr>
+										
+										<tr>
+											<td><label class="control-label">车牌号:</label></td>
+											<td><input ng-model="carNumber" type="text" class="form-control" placeholder="车牌号"></td>
+										</tr>
+										
+										<tr>
+											<td><label class="control-label">归属:</label></td>
+											<td>
+												<label class="checkbox-inline">
+													<input ng-model="selfCar" ng-click="hideCarrier()" type="radio" value="自有" name="optionsRadiosinline" id="optionsRadios1" checked> 自有
+												</label>
+												<label class="checkbox-inline">
+													<input ng-model="carrierCar" ng-click="showCarrier()" type="radio" value="承运商" name="optionsRadiosinline" id="optionsRadios2"> 承运商
+												</label>
+											</td>
+										</tr>
+										
+										<tr ng-show="selectCarrier">
+											<td><label class="control-label">承运商姓名:</label></td>
+											<td>
+												<select ng-init="selectedCarrierName = carrierList[0].carrierName" ng-model="selectedCarrier" ng-options="carrier.carrierName for carrier in carrierList">
+												</select>
+											</td>
+										</tr>
+										
+									</tbody>
+								</table>
+								
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" ng-click="addCar()" data-dismiss="modal">添加</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+						
+				</div>
+				
+				<div class="tab-pane fade" id="carrier">
+					<button ng-click="carrierModalShow()" class="btn btn-default">添加承运商信息</button>
+					
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>承运商名称</th>
+								<th>承运商地址</th>
+								<th>承运商联系方式</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr ng-repeat="carrier in carrierList">
+								<td>{{carrier.carrierName}}</td>
+								<td>{{carrier.carrierAddress}}</td>
+								<td>{{carrier.carrierTelephone}}</td>
+								<td><button ng-click="deleteCarrier(carrier.carrierID)" class="btn btn-danger">删除</button></td>
+							</tr>
+						</tbody>
+					</table>
+					
+					<div class="modal" id="carrierModal">
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+					            <div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+									<h4 class="modal-title">承运商信息框</h4>
+								</div>
+								
+								<table class="table">
+									<thead>
+										<tr>
+											<th class="col-sm-3"></th>
+											<th class="col-sm-9"></th>
+										</tr>
+									</thead>
+									<tbody>
+										
+										<tr>
+											<td><label class="control-label">承运商名称:</label></td>
+											<td><input ng-model="carrierName" type="text" class="form-control" placeholder="名称"></td>
+										</tr>
+										
+										<tr>
+											<td><label class="control-label">承运商联系方式:</label></td>
+											<td><input ng-model="carrierTelephone" type="text" class="form-control" placeholder="联系方式"></td>
+										</tr>
+										
+										<tr>
+											<td><label class="control-label">承运商地址:</label></td>
+											<td>
+												<form class="form-inline">
+												  <div data-toggle="distpicker">
+													<div class="form-group">
+													  <label class="sr-only" for="province">Province</label>
+													  <select class="form-control" id="province" ng-model="carrierProvince"></select>
+													</div>
+													<div class="form-group">
+													  <label class="sr-only" for="city">City</label>
+													  <select class="form-control" id="city" ng-model="carrierCity"></select>
+													</div>
+													<div class="form-group">
+													  <label class="sr-only" for="district">District</label>
+													  <select class="form-control" id="district" ng-model="carrierDistrict"></select>
+													</div>
+												  </div>
+												</form>
+											</td>
+										</tr>										
+										
+										<tr>
+											<td><label for="carrierDetailAddress" class="control-label">具体地址:</label></td>
+											<td><input ng-model="carrierDetailAddress" type="text" class="form-control" id="carrierDetailAddress" placeholder="具体地址"></td>
+										</tr>
+										
+									</tbody>
+								</table>
+								
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" ng-click="addCarrier()" data-dismiss="modal">添加</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

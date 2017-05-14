@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.logistics.dao.CarrierMapper">
+	<resultMap type="carrier" id="carrierMap">
+		<id property="carrierID" column="carrier_id"/>
+		<result property="carrierName" column="carrier_name"/>
+		<result property="carrierAddress" column="carrier_address"/>
+		<result property="carrierTelephone" column="carrier_telephone"/>
+	</resultMap>
+	
+	<!-- 保存承运商信息 -->
+	<insert id="saveCarrier" parameterType="carrier">
+		insert into carrier(carrier_name, carrier_address, carrier_telephone)
+		values(#{carrierName}, #{carrierAddress}, #{carrierTelephone});
+	</insert>
+	
+	<!-- 删除承运商信息 -->
+	<delete id="deleteCarrierByID" parameterType="int">
+		delete from carrier
+		where carrier_id = #{id};
+	</delete>
+	
+	<!-- 查询所有承运商信息 -->
+	<select id="findAllCarrier" resultMap="carrierMap">
+		select *
+		from carrier
+	</select>
+	
+</mapper>
