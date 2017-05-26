@@ -18,4 +18,8 @@ public interface UserMapper {
 	public User findUser(Map<String, String> map);
 	
 	public List<User> findAllUser();
+	
+	public List<User> findUserByStatus(int status);
+	
+	public void updateUser(Map<String, String> map);
 }

@@ -10,16 +10,16 @@
 		    <div>
 	        <ul class="nav navbar-nav nav-tabs">
 	            <li ng-click="changToTask()" id="taskID"><a href="#" data-toggle="tab">任务单管理</a></li>
-	            <li ng-click="changToSettlement()" id="settlementID"><a href="#settlement" data-toggle="tab">结算管理</a></li>
+	            <li ng-click="changToSettlement()" id="settlementID"><a href="javascript: void(0)" data-toggle="tab">结算管理</a></li>
 	            <li ng-click="changToOperation()" id="operationID"><a href="javascript: void(0)" data-toggle="tab">运营管理</a></li>
-	            <li ng-click="changToStatistics()" id="statisticsID"><a href="#statistics" data-toggle="tab">统计管理</a></li>
-	            <li ng-click="changToInformation()" id="informationID"><a href="#information" data-toggle="tab">信息管理</a></li>
+	            <li ng-click="changToStatistics()" id="statisticsID"><a href="javascript: void(0)" data-toggle="tab">统计管理</a></li>
+	            <li ng-click="changToInformation()" id="informationID"><a href="javascript: void(0)" data-toggle="tab">信息管理</a></li>
 	        </ul>
 			</div>
 		    
 		    <ul ng-hide="online" class="nav navbar-nav navbar-right">
-		      	<li ng-click="showRegisterModal()"><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-		      	<li ng-click="showLoginModal()"><a href="#"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+		      	<li ng-click="showRegisterModal()"><a href="javascript: void(0)"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+		      	<li ng-click="showLoginModal()"><a href="javascript: void(0)"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
 		    </ul>
 		    
 		    <div class="modal" id="loginModal">
@@ -130,17 +130,64 @@
 			
 			<ul class="nav navbar-nav navbar-right" ng-hide="!online">
 	            <li class="dropdown">
-	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	                <a href="/" class="dropdown-toggle" data-toggle="dropdown">
 	                    {{username}} <b class="caret"></b>
 	                </a>
 	                <ul class="dropdown-menu">
-	                    <li><a href="#">个人中心</a></li>
+	                    <li ng-click="userInfoModalShow()"><a href="javascript: void(0)">个人信息</a></li>
 	                    <li class="divider"></li>
-	                    <li ng-click="logout()"><a href="#">退出</a></li>
+	                    <li ng-click="logout()"><a href="javascript: void(0)">退出</a></li>
 	                </ul>
 	            </li>
 	            <li><a>{{job}}</a></li>
 	        </ul>
+		    
+		     <div class="modal" id="userInfoModal">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">登录</h4>
+						</div>
+						
+						<table class="table table-hover">
+							
+							<thead>
+								<tr>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							
+							<tbody>
+								<tr>
+									<td>登录密码:</td>
+									<td><input ng-model="updatePassword" class="form-control" placeholder="输入修改后的密码"></td>
+								</tr>
+								
+								<tr>
+									<td>真实姓名:</td>
+									<td><input ng-model="updateUsername" class="form-control" placeholder="输入真实姓名"></td>
+								</tr>
+								
+								<tr>
+									<td>身份证号:</td>
+									<td><input ng-model="updateIDcard" class="form-control" placeholder="输入个人身份证号"></td>
+								</tr>
+								
+								<tr>
+									<td>电话号码:</td>
+									<td><input ng-model="updateTelephone" class="form-control" placeholder="输入个人电话号码"></td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" ng-click="updateUser()" data-dismiss="modal">修改完善</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
 		    
 		  </div>
 		</nav>

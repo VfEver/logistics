@@ -1,5 +1,10 @@
 package com.logistics.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -125,11 +130,11 @@ public class UserController {
 		
 		if (!StringUtils.isEmpty(account) && !StringUtils.isEmpty(password)) {
 
-			json.put("status", 200);
 			
 			User user = userService.findUser(account, password);
 			
 			if (user != null) {
+				json.put("status", 200);
 				if (!StringUtils.isEmpty(user.getUsername())) {
 					
 					json.put("username", user.getUsername());
@@ -142,6 +147,7 @@ public class UserController {
 				json.put("userType", user.getType());
 				json.put("job", UserTypeUtils.findUserJob(user.getType()));
 			} else {
+				json.put("status", -1);
 				json.put("reason", "账号或者密码错误，请重新登录");
 			}
 			
@@ -152,5 +158,126 @@ public class UserController {
 
 		return json.toString();
 	}
+	
+	/**
+	 * 根据状态返回用户列表
+	 * @param status
+	 * @return
+	 */
+	@RequestMapping(value = "/findstatususer", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String findUserByStatus(
+			@RequestParam(value = "status", defaultValue = "") String status) {
 
+		JSONObject json = new JSONObject();
+		
+		if (!StringUtils.isEmpty(status)) {
+
+			json.put("status", 200);
+			
+			List<User> userList = userService.findUserByStatus(Integer.parseInt(status));
+			
+			json.put("userList", userList);
+			
+		} else {
+			
+			json.put("status", -1);
+			json.put("reason", "状态为空");
+		}
+
+		return json.toString();
+	}
+	
+	/**
+	 * 更新用户信息
+	 * @param userID
+	 * @param password
+	 * @param username
+	 * @param telephone
+	 * @param IDcard
+	 * @param status
+	 * @param userType
+	 * @return
+	 */
+	@RequestMapping(value = "/updateuser", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String updateUser(
+			@RequestParam(value = "userID", defaultValue = "") String userID,
+			@RequestParam(value = "password", defaultValue = "") String password,
+			@RequestParam(value = "username", defaultValue = "") String username,
+			@RequestParam(value = "telephone", defaultValue = "") String telephone,
+			@RequestParam(value = "IDcard", defaultValue = "") String IDcard,
+			@RequestParam(value = "status", defaultValue = "") String status,
+			@RequestParam(value = "userType", defaultValue = "") String userType) {
+
+		JSONObject json = new JSONObject();
+		
+		if (!StringUtils.isEmpty(userID)) {
+
+			json.put("status", 200);
+			Map<String, String> map = new HashMap<String, String>();
+			
+			map.put("userID", userID);
+			
+			if (!StringUtils.isEmpty(password)) {
+				map.put("password", password);
+			}
+			
+			if (!StringUtils.isEmpty(username)) {
+				map.put("username", username);
+			}
+			
+			if (!StringUtils.isEmpty(telephone)) {
+				map.put("telephone", telephone);
+			}
+			
+			if (!StringUtils.isEmpty(IDcard)) {
+				map.put("IDcard", IDcard);
+			}
+			
+			if (!StringUtils.isEmpty(status)) {
+				map.put("status", status);
+			}
+			
+			if (!StringUtils.isEmpty(userType)) {
+				
+				String type = UserTypeUtils.parseJob(userType);
+				
+				map.put("userType", type);
+			}
+			
+			userService.updateUser(map);
+			
+		} else {
+			
+			json.put("status", -1);
+		}
+
+		return json.toString();
+	}
+
+	/**
+	 * 获得所有用户列表
+	 * @return
+	 */
+	@RequestMapping(value = "/getuserlist", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String findAllUser() {
+
+		JSONObject json = new JSONObject();
+
+		List<User> userList = userService.findAllUser();
+		List<User> resUserList = new ArrayList<>();
+		for (User user : userList) {
+			user.setJob(UserTypeUtils.findUserJob(user.getType()));
+			resUserList.add(user);
+		}
+		
+		json.put("status", 200);
+		json.put("userList", resUserList);
+		return json.toString();
+
+	
+	}
+	
 }

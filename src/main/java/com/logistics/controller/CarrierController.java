@@ -1,6 +1,8 @@
 package com.logistics.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -79,7 +81,7 @@ public class CarrierController {
 	 * 查询所有承运商
 	 * @return
 	 */
-	@RequestMapping(value = "/deletecarrier", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@RequestMapping(value = "/deletecarrier", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String deleteCarrier(@RequestParam(value = "carrierID", defaultValue = "") String carrierID) {
 
@@ -88,6 +90,48 @@ public class CarrierController {
 			
 			json.put("status", 200);
 			carrierService.deleteCarrierByID(Integer.parseInt(carrierID));
+		} else {
+			json.put("status", -1);
+		}
+		
+		
+		return json.toString();
+	}
+	
+	/**
+	 * 更新承运商信息
+	 * @param carrierID
+	 * @param carrierName
+	 * @param carrierTelephone
+	 * @return
+	 */
+	@RequestMapping(value = "/updatecarrier", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String updateCarrier(@RequestParam(value = "carrierID", defaultValue = "") String carrierID, 
+								@RequestParam(value = "carrierName", defaultValue = "") String carrierName, 
+								@RequestParam(value = "carrierTelephone", defaultValue = "") String carrierTelephone ) {
+
+		JSONObject json = new JSONObject();
+		if (!StringUtils.isEmpty(carrierID)) {
+			
+			json.put("status", 200);
+
+			Map<String, String> map = new HashMap<>();
+			map.put("carrierID", carrierID);
+
+			if (!StringUtils.isEmpty(carrierName)) {
+				map.put("carrierName", carrierName);
+				carrierService.updateCarCarrierName(map);
+				carrierService.updateTaskCarrierName(map);
+			}
+			
+			if (!StringUtils.isEmpty(carrierTelephone)) {
+				map.put("carrierTelephone", carrierTelephone);
+			}
+			
+			
+			carrierService.updateCarrierInfo(map);
+			
 		} else {
 			json.put("status", -1);
 		}

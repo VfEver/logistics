@@ -12,9 +12,41 @@
 			</ul>
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade in active" id="people">
-					
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>姓名</th>
+								<th>身份证号</th>
+								<th>联系方式</th>
+								<th>现在职业</th>
+								<th>分配职业</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr ng-repeat="user in userList.slice(userCurIndex*5, (userCurIndex+1)*5)">
+								<td>{{user.username}}</td>
+								<td>{{user.IDcard}}</td>
+								<td>{{user.telephone}}</td>
+								<td>{{user.job}}</td>
+								<td>
+									<select ng-model="updateJob" class="form-control">
+										<option value="调度员">调度员</option>
+										<option value="维护员">维护员</option>
+										<option value="驾驶员">驾驶员</option>
+									</select>
+								</td>
+								<td><button ng-click="updateUserJob(user.userID, updateJob)" class="btn btn-success">更新</button></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="btn-group">
+						<button ng-repeat="btn in userBtnNum" ng-click="jumpToUserFn($index)" class="btn btn-default" ng-class="{'btn-success': $index === userCurIndex}" ng-show="userList.length > 5">{{btn}}</button>
+					</div>
 				</div>
 				
+				<!-- 车辆信息界面 -->
 				<div class="tab-pane fade" id="car">
 					<button ng-click="carModalShow()" class="btn btn-default">添加车辆信息</button>
 					
@@ -30,15 +62,76 @@
 						</thead>
 						
 						<tbody>
-							<tr ng-repeat="car in carList">
+							<tr ng-repeat="car in carList.slice(carCurIndex*5, (carCurIndex+1)*5)">
 								<td>{{car.carNumber}}</td>
 								<td>{{car.capacity}}</td>
 								<td>{{car.carType}}</td>
 								<td>{{car.belongType}}</td>
-								<td><button ng-click="deleteCar(car.carID)" class="btn btn-danger">删除</button></td>
+								<td><button ng-click="checkCarInfo(car)" class="btn btn-primary">点击查看</button></td>
 							</tr>
 						</tbody>
 					</table>
+					<div class="btn-group">
+						<button ng-repeat="btn in carBtnNum" ng-click="jumpToCarFn($index)" class="btn btn-default" ng-class="{'btn-success': $index === carCurIndex}" ng-show="carList.length > 5">{{btn}}</button>
+					</div>
+					<!-- car更新信息模态框 -->
+					<div class="modal" id="carInfoModal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+									<h4 class="modal-title">车辆具体信息框</h4>
+								</div>
+							
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th></th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									
+									<tbody>
+										<tr>
+											<td>车牌号</td>
+											<td>{{selectedCar.carNumber}}</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>运载量</td>
+											<td>{{selectedCar.capacity}}</td>
+											<td>
+												<div class="input-group">
+													<input type="text" class="form-control" ng-model="updateWeight" required="required">
+													<span class="input-group-addon">吨</span>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>车型</td>
+											<td>{{car.carType}}</td>
+											<td>
+												<select class="form-control" ng-model="updateCarType">
+													<option value="平板车">平板车</option>
+													<option value="高栏车">高栏车</option>
+													<option value="厢式汽车">厢式汽车</option>
+													<option value="保温车">保温车</option>
+													<option value="危险品车">危险品车</option>
+												</select>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							
+								<div class="modal-footer">
+									<button class="btn btn-primary" ng-click="updateCar()" data-dismiss="modal">更新车辆</button>
+									<button ng-click="deleteCar()" class="btn btn-danger" data-dismiss="modal">删除</button>
+								</div>
+							
+							</div>
+						</div>
+					</div>
 					
 					 <div class="modal" id="carModal">
 					    <div class="modal-dialog">
@@ -73,7 +166,7 @@
 											<td><label class="control-label">运载量:</label></td>
 											<td>
 												<div class="input-group">
-													<input type="text" class="form-control" ng-model="weight">
+													<input type="text" class="form-control" ng-model="weight" required="required">
 													<span class="input-group-addon">吨</span>
 												</div>
 											</td>
@@ -81,7 +174,7 @@
 										
 										<tr>
 											<td><label class="control-label">车牌号:</label></td>
-											<td><input ng-model="carNumber" type="text" class="form-control" placeholder="车牌号"></td>
+											<td><input ng-model="carNumber" type="text" class="form-control" placeholder="车牌号" required="required"></td>
 										</tr>
 										
 										<tr>
@@ -130,14 +223,58 @@
 						</thead>
 						
 						<tbody>
-							<tr ng-repeat="carrier in carrierList">
+							<tr ng-repeat="carrier in carrierList.slice(carrierCurIndex*5, (carrierCurIndex+1)*5)">
 								<td>{{carrier.carrierName}}</td>
 								<td>{{carrier.carrierAddress}}</td>
 								<td>{{carrier.carrierTelephone}}</td>
-								<td><button ng-click="deleteCarrier(carrier.carrierID)" class="btn btn-danger">删除</button></td>
+								<td><button ng-click="checkCarrierInfo(carrier)" class="btn btn-primary">点击查看</button></td>
 							</tr>
 						</tbody>
 					</table>
+					<div class="btn-group">
+						<button ng-repeat="btn in carrierBtnNum" ng-click="jumpToCarrierFn($index)" class="btn btn-default" ng-class="{'btn-success': $index === carrierCurIndex}" ng-show="carrierList.length > 5">{{btn}}</button>
+					</div>
+					
+					<div class="modal" id="carrierInfoModal">
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+					            <div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+									<h4 class="modal-title">承运商信息框</h4>
+								</div>
+								
+								<table class="table">
+									<thead>
+										<tr>
+											<th></th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										
+										<tr>
+											<td><label class="control-label">承运商名称:</label></td>
+											<td>{{selectCarrier.carrierName}}</td>
+											<td><input ng-model="updateCarrierName" type="text" class="form-control" placeholder="承运商名称"></td>
+										</tr>
+										
+										<tr>
+											<td><label class="control-label">承运商联系方式:</label></td>
+											<td>{{selectCarrier.carrierTelephone}}</td>
+											<td><input ng-model="updateCarrierTelephone" type="text" class="form-control" placeholder="承运商名称"></td>
+										</tr>
+										
+									</tbody>
+								</table>
+								
+								<div class="modal-footer">
+									<button class="btn btn-primary" ng-click="updateCarrier()" data-dismiss="modal">更新</button>
+									<button ng-click="deleteCarrier()" class="btn btn-danger" data-dismiss="modal">删除</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
 					
 					<div class="modal" id="carrierModal">
 					    <div class="modal-dialog">

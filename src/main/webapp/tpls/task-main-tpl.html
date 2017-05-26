@@ -15,9 +15,9 @@
 				<tbody>
 					<tr>
 						<td><label for="sendName" class="control-label">发货姓名:</label></td>
-						<td><input ng-model="sendName" type="text" class="form-control" id="sendName" placeholder="请输入名字"></td>
+						<td><input ng-model="sendName" type="text" class="form-control" id="sendName" placeholder="请输入名字"  required="required"></td>
 						<td><label for="sendTelephone" class="control-label">发货人联系方式:</label></td>
-						<td><input ng-model="sendTelephone" type="text" class="form-control" id="sendTelephone" placeholder="请输入电话号码"></td>
+						<td><input ng-model="sendTelephone" type="text" class="form-control" id="sendTelephone" placeholder="请输入电话号码"  required="required"></td>
 					</tr>
 					
 					<tr>
@@ -41,14 +41,14 @@
 							</form>
 						</td>
 						<td><label for="sendAddress" class="control-label">始发具体地址:</label></td>
-						<td><input ng-model="detailAddress" type="text" class="form-control" id="detailAddress" placeholder="具体地址"></td>
+						<td><input ng-model="sendDetailAddress" type="text" class="form-control" id="detailAddress" placeholder="具体地址"  required="required"></td>
 					</tr>
 					
 					<tr>
-						<td><label for="sendName" class="control-label">收货姓名:</label></td>
-						<td><input ng-model="reciveName" type="text" class="form-control" id="reciveName" placeholder="请输入名字"></td>
+						<td><label for="reciveName" class="control-label">收货姓名:</label></td>
+						<td><input ng-model="reciveName" type="text" class="form-control" id="reciveName" placeholder="请输入名字"  required="required"></td>
 						<td><label for="reciveTelephone" class="control-label">收货人联系方式:</label></td>
-						<td><input ng-model="reciveTelephone" type="text" class="form-control" id="reciveTelephone" placeholder="请输入电话号码"></td>
+						<td><input ng-model="reciveTelephone" type="text" class="form-control" id="reciveTelephone" placeholder="请输入电话号码"  required="required"></td>
 					</tr>
 					
 					<tr>
@@ -71,28 +71,28 @@
 							  </div>
 							</form>
 						</td>
-						<td><label for="sendAddress" class="control-label">收货具体地址:</label></td>
-						<td><input ng-model="detailAddress" type="text" class="form-control" id="detailAddress" placeholder="具体地址"></td>
+						<td><label for="detailAddress" class="control-label">收货具体地址:</label></td>
+						<td><input ng-model="receiveDetailAddress" type="text" class="form-control" id="receiveDetailAddress" placeholder="具体地址"  required="required"></td>
 					</tr>
 					
 					<tr>
 						<td><label class="control-label">货物类型:</label></td>
 						<td>
-							<select class="form-control">
-								<option>食品饮料</option>
-								<option>蔬菜水果</option>
-								<option>电子电器</option>
-								<option>农资粮食</option>
-								<option>化工产品</option>
-								<option>日用百货</option>
-								<option>汽修配件</option>
-								<option>药品</option>
+							<select ng-model="goodsType" class="form-control">
+								<option value="食品饮料">食品饮料</option>
+								<option value="蔬菜水果">蔬菜水果</option>
+								<option value="电子电器">电子电器</option>
+								<option value="农资粮食">农资粮食</option>
+								<option value="化工产品">化工产品</option>
+								<option value="日用百货">日用百货</option>
+								<option value="汽修配件">汽修配件</option>
+								<option value="药品">药品</option>
 							</select>
 						</td>
 						<td><label class="control-label">货运量:</label></td>
 						<td>
 							<div class="input-group">
-								<input type="text" class="form-control" ng-model="weight">
+								<input type="text" class="form-control" ng-model="weight"  required="required">
 								<span class="input-group-addon">吨</span>
 							</div>
 						</td>
@@ -100,9 +100,9 @@
 					
 					<tr>
 						<td><label class="control-label">车辆类型:</label></td>
-						<td><input ng-model="carType" type="text" class="form-control" placeholder="点击选择车辆类型"></td>
-						<td><label class="control-label">驾驶人:</label></td>
-						<td><input ng-model="diver" type="text" class="form-control" placeholder="点击选择驾驶人"></td>
+						<td><input ng-click="showCarList()" ng-model="carInfo" type="text" class="form-control" placeholder="点击选择车辆类型"></td>
+						<td><label ng-show="driverShow" class="control-label">驾驶人:</label></td>
+						<td><input ng-click="showUserList()" ng-show="driverShow" ng-model="driverName" type="text" class="form-control" placeholder="点击选择驾驶人"></td>
 					</tr>
 					
 					<tr>
@@ -111,7 +111,7 @@
 						<td><label class="control-label">实际费用:</label></td>
 						<td>
 							<div class="input-group">
-								<input type="text" class="form-control" ng-model="cost">
+								<input type="text" class="form-control" ng-model="cost"  required="required">
 								<span class="input-group-addon">元</span>
 							</div>
 						</td>
@@ -126,6 +126,81 @@
 					
 				</tbody>
 			</table>
+			
+			<div class="modal" id="carModal">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">选择车辆</h4>
+						</div>
+						
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>车牌号</th>
+									<th>容量（吨）</th>
+									<th>车辆类型</th>
+									<th>所属类型</th>
+									<th>所属人</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+								<tr ng-repeat="car in carList">
+									<td>{{car.carNumber}}</td>
+									<td>{{car.capacity}}</td>
+									<td>{{car.carType}}</td>
+									<td>{{car.belongType}}</td>
+									<td>{{car.carrierName}}</td>
+									<td><button ng-click="selectCar(car)" class="btn btn-success" data-dismiss="modal">选择</button></td>
+								</tr>
+								
+							</tbody>
+						</table>
+						
+						<div class="modal-footer">
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			
+			<div class="modal" id="userModal">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">选择驾驶员</h4>
+						</div>
+						
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>姓名</th>
+									<th>联系方式</th>
+									<th>身份证号</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+								<tr ng-repeat="user in userList">
+									<td>{{user.username}}</td>
+									<td>{{user.telephone}}</td>
+									<td>{{user.IDcard}}</td>
+									<td><button ng-click="selectUser(user)" class="btn btn-success" data-dismiss="modal">选择</button></td>
+								</tr>
+								
+							</tbody>
+						</table>
+						
+						<div class="modal-footer">
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			
 			</div>
 			
 		</div>

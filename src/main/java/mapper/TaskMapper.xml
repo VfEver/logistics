@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.logistics.dao.TaskMapper">
+	<resultMap type="task" id="taskMap">
+		<id property="taskID" column="task_id"/>
+		<result property="sendName" column="sendName"/>
+		<result property="sendTelephone" column="sendTelephone"/>
+		<result property="sendAddress" column="sendAddress"/>
+		<result property="receiveName" column="receiveName"/>
+		<result property="receiveTelephone" column="receiveTelephone"/>
+		<result property="receiveAddress" column="receiveAddress"/>
+		<result property="goodsType" column="goods_type"/>
+		<result property="weight" column="weight"/>
+		<result property="carID" column="car_id"/>
+		<result property="driverID" column="driverID"/>
+		<result property="driverName" column="driverName"/>
+		<result property="realCost" column="real_cost"/>
+		<result property="beginTime" column="begin_time"/>
+		<result property="endTime" column="end_time"/>
+		<result property="status" column="status"/>
+		<result property="miles" column="miles"/>
+		<result property="oil" column="oil"/>
+		<result property="transCost" column="trans_cost"/>
+		<result property="transType" column="trans_type"/>
+	</resultMap>
+	
+	<!-- 保存任务单 -->
+	<insert id="saveTask" parameterType="task">
+		insert into task(sendName, sendTelephone, sendAddress, receiveName, receiveTelephone, receiveAddress, goods_type, weight, car_id, driverID, driverName, real_cost, begin_time, trans_type)
+		values(#{sendName}, #{sendTelephone}, #{sendAddress}, #{receiveName}, #{receiveTelephone}, #{receiveAddress}, #{goodsType}, #{weight}, #{carID}, #{driverID}, #{driverName}, #{realCost}, #{beginTime}, #{transType});
+	</insert>
+	
+	<!-- 查询未结算的任务单 -->
+	<select id="findSettlelessTask" parameterType="int" resultMap="taskMap">
+		select *
+		from task
+		where status = #{status}
+	</select>
+	
+	<!-- 更新任务单--> 
+	<update id="updateTask" parameterType="map">
+		update task
+		set status = 1,
+			<if test="_parameter.containsKey('miles')">  
+				miles = #{miles},
+		    </if>
+		    <if test="_parameter.containsKey('oil')">  
+				oil = #{oil},
+		    </if>
+		    <if test="_parameter.containsKey('transCost')">  
+				trans_cost = #{transCost},
+		    </if>
+		    end_time = #{endTime}
+		where task_id = #{taskID};
+	</update>
+	
+	<!-- 查询所有订单 -->
+	<select id="findAllTask" resultMap="taskMap">
+		select *
+		from task;
+	</select>
+	
+	<!-- 根据任务单号查询任务 -->
+	<select id="findTaskByID" parameterType="int" resultMap="taskMap">
+		select *
+		from task
+		where task_id = #{taskID};
+	</select>
+	
+	<!-- 查询所有类型订单 -->
+	<select id="findAllTaskByType" parameterType="string" resultMap="taskMap">
+		select *
+		from task
+		where trans_type = #{type};
+	</select>
+	
+	<!-- 查询车牌号 -->
+	<select id="findCarNumberByID" parameterType="int" resultType="string">
+		select car_number
+		from car
+		where car_id = #{carID}
+	</select>
+	
+	<!-- 根据ID查询车辆的类型信息 -->
+	<select id="findCarTypeByID" parameterType="int" resultType="string">
+		select car_type
+		from car
+		where car_id = #{carID};
+	</select>
+	
+	<!-- 查询车辆类型信息数据 -->
+	<select id="findCarTypeData" resultType="map">
+		select sum(t.trans_cost) as transCost,
+				sum(t.real_cost) as realCost,
+				sum(t.miles) as miles,
+				sum(t.oil) as oil,
+				c.car_type as carType
+		from car c join task t
+		on c.car_id = t.car_id
+		where t.trans_type = 0
+		group by c.car_type
+	</select>
+</mapper>

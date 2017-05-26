@@ -93,4 +93,36 @@ public class UserService {
 		
 		return userList;
 	}
+	
+	/**
+	 * 根据状态查询用户信息
+	 * @param status
+	 * @return
+	 */
+	public List<User> findUserByStatus(int status) {
+		
+		SqlSession sqlSession = MybatisUtils.getSqlSession(sqlSessionFactory);
+		UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+		
+		List<User> userList = userMapper.findUserByStatus(status);
+		
+		MybatisUtils.closeSqlSession(sqlSession);
+		
+		return userList;
+	}
+	
+	/**
+	 * 更新人员信息
+	 * @param map
+	 */
+	public void updateUser(Map<String, String> map) {
+		SqlSession sqlSession = MybatisUtils.getSqlSession(sqlSessionFactory);
+		UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+		
+		userMapper.updateUser(map);
+		
+		sqlSession.commit();
+		MybatisUtils.closeSqlSession(sqlSession);
+		
+	}
 }

@@ -1,6 +1,7 @@
 package com.logistics.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -36,7 +37,7 @@ public class CarrierService {
 		Carrier carrier = new Carrier();
 		carrier.setCarrierName(carrierName);
 		carrier.setCarrierAddress(carrierAddress);
-		carrier.setCarrierTelephhone(carrierTelephone);
+		carrier.setCarrierTelephone(carrierTelephone);
 		
 		carrierMapper.saveCarrier(carrier);
 		sqlSession.commit();
@@ -72,5 +73,55 @@ public class CarrierService {
 		List<Carrier> carrierList = carrierMapper.findAllCarrier();
 		
 		return carrierList;
+	}
+	
+	/**
+	 * 更新承运商信息
+	 * @param map
+	 */
+	public void updateCarrierInfo(Map<String, String> map) {
+		
+		SqlSession sqlSession = MybatisUtils.getSqlSession(sqlSessionFactory);
+		CarrierMapper carrierMapper = sqlSession.getMapper(CarrierMapper.class);
+		
+		carrierMapper.updateCarrierInfo(map);
+		
+		sqlSession.commit();
+		
+		MybatisUtils.closeSqlSession(sqlSession);
+	}
+	
+	/**
+	 * 更新车辆信息中承运商名字
+	 * @param map
+	 */
+	public void updateCarCarrierName(Map<String, String> map) {
+		
+		SqlSession sqlSession = MybatisUtils.getSqlSession(sqlSessionFactory);
+		CarrierMapper carrierMapper = sqlSession.getMapper(CarrierMapper.class);
+		
+		carrierMapper.updateCarCarrierName(map);
+		
+		sqlSession.commit();
+		
+		MybatisUtils.closeSqlSession(sqlSession);
+		
+	}
+	
+	/**
+	 * 更新任务单中运营商名字
+	 * @param map
+	 */
+	public void updateTaskCarrierName(Map<String, String>map) {
+		
+		SqlSession sqlSession = MybatisUtils.getSqlSession(sqlSessionFactory);
+		CarrierMapper carrierMapper = sqlSession.getMapper(CarrierMapper.class);
+		
+		carrierMapper.updateTaskCarrierName(map);
+		
+		sqlSession.commit();
+		
+		MybatisUtils.closeSqlSession(sqlSession);
+		
 	}
 }

@@ -73,4 +73,9 @@
       	<property name="sqlSessionFactory" ref="sqlSessionFactoryBeanID"></property>
       </bean>
       
+      <!-- task service bean -->
+      <bean id="taskServiceID" class="com.logistics.service.TaskService">
+      	<property name="sqlSessionFactory" ref="sqlSessionFactoryBeanID"></property>
+      </bean>
+      
 </beans>

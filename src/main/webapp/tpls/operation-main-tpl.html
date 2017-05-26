@@ -3,14 +3,117 @@
 	<div class="operation-outer">
 	
 		<div class="operation-wrap">
+		<div class="operation-inner">
 			<div class="search-div">
                 <div class="input-group">
-                    <input type="text" class="form-control">
+                    <input ng-model="taskID" type="text" class="form-control" placeholder="输入任务单号">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">搜索</button>
+                        <button ng-click="searchTask()" class="btn btn-success" type="button">搜索</button>
+                        <button ng-click="gotoTaskList()" class="btn btn-primary" type="button">列表</button>
+	                    <button ng-click="selfTask()" class="btn btn-primary" type="button">自营</button>
+	                    <button ng-click="notSelfTask()" class="btn btn-primary" type="button">承运商</button>
                     </span>
                 </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
+            </div>
+            
+            <div ng-show="!taskShow">
+            	<table class="table table-hover">
+            	
+            		<thead>
+            			<tr>
+            				<th>单号</th>
+            				<th>发货人</th>
+            				<th>发货时间</th>
+            				<th>收货人</th>
+            			</tr>
+            		</thead>
+            		
+            		<tbody>
+            			<tr ng-repeat="task in taskList.slice(taskCurIndex*5, (taskCurIndex+1)*5)" ng-click="checkTaskDetail(task)" style="pointer: cursor">
+            				<td>{{task.taskID}}</td>
+	           				<td>{{task.sendName}}</td>
+							<td>{{task.bTime}}</td>
+							<td>{{task.receiveName}}</td>
+            			</tr>
+            		</tbody>
+            	</table>
+            	<div class="btn-group">
+					<button ng-repeat="btn in taskBtnNum" ng-click="jumpToTaskFn($index)" class="btn btn-default" ng-class="{'btn-success': $index === taskCurIndex}" ng-show="taskList.length > 5">{{btn}}</button>
+				</div>
+            </div>
+            
+            <div ng-show="taskShow">
+        		<table class="table table-hover">
+        			<thead>
+						<tr>
+							<th class="col-sm-2"></th>
+							<th class="col-sm-5"></th>
+							<th class="col-sm-2"></th>
+							<th class="col-sm-3"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><label for="sendName" class="control-label">发货姓名:</label></td>
+							<td><label for="sendName" class="control-label">{{task.sendName}}</label></td>
+							<td><label for="sendTelephone" class="control-label">发货人联系方式:</label></td>
+							<td><label for="sendName" class="control-label">{{task.sendTelephone}}</label></td>
+						</tr>
+						
+						<tr>
+							<td><label for="sendAddress" class="control-label">始发地址:</label></td>
+							<td><label for="sendName" class="control-label">{{task.sendAddress}}</label></td>
+							<td><label for="sendAddress" class="control-label">始发时间:</label></td>
+							<td><label for="sendName" class="control-label">{{task.bTime}}</label></td>
+							
+						</tr>
+						
+						<tr>
+							<td><label for="reciveName" class="control-label">收货姓名:</label></td>
+							<td><label for="sendName" class="control-label">{{task.receiveName}}</label></td>
+							<td><label for="reciveTelephone" class="control-label">收货人联系方式:</label></td>
+							<td><label for="sendName" class="control-label">{{task.receiveTelephone}}</label></td>
+						</tr>
+						
+						<tr>
+							<td><label for="reciveAddress" class="control-label">收货地址:</label></td>
+							<td><label for="sendName" class="control-label">{{task.receiveAddress}}</label></td>
+							<td><label for="sendAddress" class="control-label">收货时间:</label></td>
+							<td><label for="sendName" class="control-label">{{task.eTime}}</label></td>
+						</tr>
+						
+						<tr>
+							<td><label class="control-label">货物类型:</label></td>
+							<td><label for="sendName" class="control-label">{{task.goodsType}}</label></td>
+							<td><label class="control-label">货运量:</label></td>
+							<td>
+								<div class="input-group">
+									<label class="control-label">{{task.weight}}吨</label>
+								</div>
+							</td>
+						</tr>
+						
+						<tr>
+							<td><label class="control-label">驾驶人:</label></td>
+							<td><label for="sendName" class="control-label">{{task.driverName}}</label></td>
+							<td><label class="control-label">油耗:</label></td>
+							<td><label for="sendName" class="control-label">{{task.oil}}L</label></td>
+						</tr>
+						
+						<tr>
+							<td><label class="control-label">公里数:</label></td>
+							<td><label for="sendName" class="control-label">{{task.miles}}公里</label></td>
+							<td><label class="control-label">实际费用:</label></td>
+							<td>
+								<div class="input-group">
+								<label class="control-label">{{task.realCost}}元</label>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>   
+            </div>
+           </div>
 		</div>
 		
 	</div>

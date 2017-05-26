@@ -27,4 +27,32 @@
 		from carrier
 	</select>
 	
+	<!-- 更新承运商信息 -->
+	<update id="updateCarrierInfo" parameterType="map">
+		update carrier
+		set addition = 1,
+			<if test="_parameter.containsKey('carrierName')">
+				carrier_name = #{carrierName},
+			</if>
+			<if test="_parameter.containsKey('carrierTelephone')">
+				carrier_telephone = #{carrierTelephone},
+			</if>
+		addition = 1
+		where carrier_id = #{carrierID};
+	</update>
+	
+	<!-- 如果更新carrier的姓名，则更新所有car中的carrier姓名 -->
+	<update id="updateCarCarrierName" parameterType="map">
+		update car
+		set carrier_name=#{carrierName}
+		where carrier_id = #{carrierID};
+	</update>
+	
+	<!-- 针对task中的carrier_name的修改 -->
+	<update id="updateTaskCarrierName" parameterType="map">
+		update task
+		set driverName = #{carrierName}
+		where driverID = #{carrierID};
+	</update>
+	
 </mapper>

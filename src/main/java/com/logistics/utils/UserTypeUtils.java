@@ -39,4 +39,37 @@ public class UserTypeUtils {
 		
 		return job;
 	}
+	
+	public static String parseJob(String job) {
+		
+		String userType = "0";
+		switch(job) {
+			case "未分配" : {
+				userType = "0";
+				break;
+			}
+			case "管理员" : {
+				userType = "1";
+				break;
+			}
+			case "调度员" : {
+				userType = "2";
+				break;
+			}
+			case "维护员" : {
+				userType = "3";
+				break;
+			}
+			case "驾驶员" : {
+				userType = "4";
+				break;
+			}
+			default : {
+				userType = "0";
+				break;
+			}
+		}
+		
+		return userType;
+	}
 }

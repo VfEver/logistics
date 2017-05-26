@@ -13,6 +13,7 @@ public class Car {
 	private int carrierID;
 	private String carrierName;
 	private String belongType;
+	private int status;
 	
 	public int getCarID() {
 		return carID;
@@ -55,6 +56,12 @@ public class Car {
 	}
 	public void setBelongType(String belongType) {
 		this.belongType = belongType;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

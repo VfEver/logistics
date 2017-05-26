@@ -10,6 +10,7 @@
 		<result property="carrierID" column="carrier_id"/>
 		<result property="carrierName" column="carrier_name"/>
 		<result property="belongType" column="belong_type"/>
+		<result property="status" column="status"/>
 	</resultMap>
 	
 	<!-- 保存车辆信息 -->
@@ -28,5 +29,33 @@
 	<select id="findAllCar" resultMap="carMap">
 		select * 
 		from car
+		order by belong_type
 	</select>
+	
+	<!-- 根据状态查询信息 -->
+	<select id="findCarByStatus" parameterType="int" resultMap="carMap">
+		select *
+		from car
+		where status = #{status};
+	</select>
+	
+	<!-- 更新车辆信息 -->
+	<update id="updateCarStatus" parameterType="map">
+		update car
+		set status = #{status}
+		where car_id = #{carID}
+	</update>
+	
+	<update id="updateCarInfo" parameterType="map">
+		update car
+		set addition = 1,
+			<if test="_parameter.containsKey('weight')">  
+				capacity = #{weight},
+		    </if> 
+		    <if test="_parameter.containsKey('carType')">  
+				car_type = #{carType},
+		    </if>
+		    addition = 1
+		where car_id = #{carID};
+	</update>
 </mapper>

@@ -29,10 +29,10 @@ public class Carrier {
 	public void setCarrierAddress(String carrierAddress) {
 		this.carrierAddress = carrierAddress;
 	}
-	public String getCarrierTelephhone() {
+	public String getCarrierTelephone() {
 		return carrierTelephone;
 	}
-	public void setCarrierTelephhone(String carrierTelephone) {
+	public void setCarrierTelephone(String carrierTelephone) {
 		this.carrierTelephone = carrierTelephone;
 	}
 	

@@ -7,5 +7,6 @@
 		<typeAlias type="com.logistics.entity.User" alias="user"/>
 		<typeAlias type="com.logistics.entity.Carrier" alias="carrier"/>
 		<typeAlias type="com.logistics.entity.Car" alias="car"/>
+		<typeAlias type="com.logistics.entity.Task" alias="task"/>
 	</typeAliases>
 </configuration>

@@ -9,7 +9,8 @@
 		<result property="username" column="user_name"/>
 		<result property="telephone" column="telephone"/>
 		<result property="IDcard" column="IDcard"/>
-		<result property="type" column="user_type"/>		
+		<result property="type" column="user_type"/>
+		<result property="status" column="status"/>
 	</resultMap>
 	
 	<!-- 保存注册用户 -->
@@ -32,8 +33,42 @@
 		where account = #{account} and password = #{password};
 	</select>
 	
+	<!-- 查询所有用户 -->
 	<select id="findAllUser" resultMap="userMap">
 		select *
 		from user
 	</select>
+	
+	<!-- 根据状态查询人员信息 -->
+	<select id="findUserByStatus" parameterType="int" resultMap="userMap">
+		select *
+		from user
+		where status = #{status} and user_type = 4;
+	</select>
+	
+	<!-- 更新人员状态信息 -->
+	<update id="updateUser" parameterType="map">
+		update user
+		set addition = 1,
+			<if test="_parameter.containsKey('password')">  
+				password = #{password},
+		    </if> 
+		    <if test="_parameter.containsKey('username')">  
+				user_name = #{username},
+		    </if> 
+		    <if test="_parameter.containsKey('telephone')">  
+				telephone = #{telephone},
+		    </if> 
+		    <if test="_parameter.containsKey('IDcard')">  
+				IDcard = #{IDcard},
+		    </if> 
+		    <if test="_parameter.containsKey('userType')">  
+				user_type = #{userType},
+		    </if> 
+		    <if test="_parameter.containsKey('status')">  
+				status = #{status},
+		    </if> 
+		    addition = 1
+		where user_id = #{userID}; 
+	</update>
 </mapper>

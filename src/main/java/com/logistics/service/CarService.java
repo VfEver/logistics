@@ -1,6 +1,7 @@
 package com.logistics.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -83,4 +84,51 @@ public class CarService {
 		return carList;
 	}
 	
+	/**
+	 * 根据状态查询车辆信息
+	 * @param status
+	 * @return
+	 */
+	public List<Car> findCarByStatus(int status) {
+		
+		SqlSession sqlSession = MybatisUtils.getSqlSession(sqlSessionFactory);
+		CarMapper carMapper = sqlSession.getMapper(CarMapper.class);
+		
+		List<Car> carList = carMapper.findCarByStatus(status);
+		
+		MybatisUtils.closeSqlSession(sqlSession);
+		
+		return carList;
+	}
+	
+	/**
+	 * 更新车辆状态信息
+	 * @param map
+	 */
+	public void updateCarStatus(Map<String, String> map) {
+		
+		SqlSession sqlSession = MybatisUtils.getSqlSession(sqlSessionFactory);
+		CarMapper carMapper = sqlSession.getMapper(CarMapper.class);
+		
+		carMapper.updateCarStatus(map);
+		
+		sqlSession.commit();
+		MybatisUtils.closeSqlSession(sqlSession);
+	}
+	
+	/**
+	 * 更新车辆具体信息
+	 * @param map
+	 */
+	public void updateCarInfo(Map<String, String> map) {
+		
+		SqlSession sqlSession = MybatisUtils.getSqlSession(sqlSessionFactory);
+		CarMapper carMapper = sqlSession.getMapper(CarMapper.class);
+		
+		carMapper.updateCarInfo(map);
+		
+		sqlSession.commit();
+		MybatisUtils.closeSqlSession(sqlSession);
+		
+	}
 }

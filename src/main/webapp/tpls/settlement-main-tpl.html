@@ -1,0 +1,100 @@
+<!-- 结算页面 -->
+<div ng-controller="SettlementController" class="settlement-outer">
+	<div class="settlement-wrap">
+		<div class="settlement-inner">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>任务单号</th>
+						<th>开始时间</th>
+						<th>发送人</th>
+						<th>发送地址</th>
+						<th>收货人</th>
+						<th>收货地址</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="task in taskList">
+						<td>{{task.taskID}}</td>
+						<td>{{task.bTime}}</td>
+						<td>{{task.sendName}}</td>
+						<td>{{task.sendAddress}}</td>
+						<td>{{task.receiveName}}</td>
+						<td>{{task.receiveAddress}}</td>
+						<td><button ng-click="taskDetailShow(task)" class="btn btn-success">结算</button></td>
+					</tr>
+				</tbody>
+				
+			</table>
+			
+			<!-- 结算模态框 -->
+			<div class="modal" id="taskModal">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">{{settlementType}}</h4>
+						</div>
+							<div ng-show="self">
+								<table class="table table-hover">
+									<tbody>
+										<tr>
+											<td>公里数：</td>
+											<td>
+												<div class="input-group">
+													<input type="text" class="form-control" ng-model="miles">
+													<span class="input-group-addon">km</span>
+												</div>
+											</td>
+										</tr>
+										
+										<tr>
+											<td>油耗:</td>
+											<td>
+												<div class="input-group">
+													<input type="text" class="form-control" ng-model="oil">
+													<span class="input-group-addon">升</span>
+												</div>
+											</td>
+										</tr>
+										
+										<tr>
+											<td>运输花费:</td>
+											<td>
+												<div class="input-group">
+													<input type="text" class="form-control" ng-model="transCost">
+													<span class="input-group-addon">元</span>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+							<div ng-show="!self">
+								<table class="table table-hover">
+									<tbody>
+										<tr>
+											<td>管理费用：</td>
+											<td>
+												<div class="input-group">
+													<input type="text" class="form-control" ng-model="transCost">
+													<span class="input-group-addon">元</span>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" ng-click="settlementTask()" data-dismiss="modal">结算此单</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			
+		</div>
+	</div>
+</div>

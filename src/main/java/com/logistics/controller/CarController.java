@@ -1,6 +1,8 @@
 package com.logistics.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +58,7 @@ public class CarController {
 			
 			if ("自有".equals(belong)) {
 
-				carService.saveCar(carType, carNumber, Double.parseDouble(capacity), -1, "", belong);
+				carService.saveCar(carType, carNumber, Double.parseDouble(capacity), -1, "自有", belong);
 			} else {
 				
 				carService.saveCar(carType, carNumber, Double.parseDouble(capacity), Integer.parseInt(carrierID), carrierName, belong);
@@ -110,4 +112,106 @@ public class CarController {
 		return json.toString();
 	}
 	
+	/**
+	 * 根据车辆状态信息查询
+	 * @param status
+	 * @return
+	 */
+	@RequestMapping(value = "/getfreecar", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String findFreeCar(
+			@RequestParam(value = "status", defaultValue = "") String status) {
+
+		JSONObject json = new JSONObject();
+
+		if (!StringUtils.isEmpty(status)) {
+			
+			json.put("status", 200);
+			
+			List<Car> carList = carService.findCarByStatus(Integer.parseInt(status));
+			json.put("carList", carList);
+			
+		} else {
+			
+			json.put("status", -1);
+		}
+		
+		return json.toString();
+	}
+	
+	/**
+	 * 更新车辆状态信息
+	 * @param carID
+	 * @param status
+	 * @return
+	 */
+	@RequestMapping(value = "/updatecar", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String updateCar(
+			@RequestParam(value = "carID", defaultValue = "") String carID,
+			@RequestParam(value = "status", defaultValue = "") String status) {
+
+		JSONObject json = new JSONObject();
+
+		if (!StringUtils.isEmpty(status)) {
+			
+			json.put("status", 200);
+			
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("carID", carID);
+			map.put("status", status);
+			
+			carService.updateCarStatus(map);
+			
+		} else {
+			
+			json.put("status", -1);
+		}
+		
+		return json.toString();
+	}
+
+
+	/**
+	 * 更新车辆的具体信息
+	 * @param carID
+	 * @param carType
+	 * @param weight
+	 * @return
+	 */
+	@RequestMapping(value = "/updatecarinfo", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String updateCarInfo(
+			@RequestParam(value = "carID", defaultValue = "") String carID,
+			@RequestParam(value = "carType", defaultValue = "") String carType,
+			@RequestParam(value = "weight", defaultValue = "") String weight) {
+
+		JSONObject json = new JSONObject();
+
+		if (!StringUtils.isEmpty(carID)) {
+			
+			json.put("status", 200);
+			
+			Map<String, String> map = new HashMap<String, String>();
+			
+			if (!StringUtils.isEmpty(carType)) {
+				
+				map.put("carType", carType);
+			}
+			
+			if (!StringUtils.isEmpty(weight)) {
+				
+				map.put("weight", weight);
+			}
+			map.put("carID", carID);
+			
+			carService.updateCarInfo(map);
+			
+		} else {
+			
+			json.put("status", -1);
+		}
+		
+		return json.toString();
+	}
 }
